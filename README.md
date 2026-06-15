@@ -1,128 +1,89 @@
 # 🛡️ AI入侵检测系统 (AI Intrusion Detection System)
 
-基于机器学习的网络流量异常检测系统，使用 **NSL-KDD 真实数据集** 训练，支持 5 类流量识别和 **实时网络抓包检测**。
+基于机器学习的网络流量异常检测系统，使用 **NSL-KDD 真实数据集** 训练，支持 **服务器日志入侵检测**。
 
 ## 📋 功能特性
 
 | 模块 | 说明 |
 |------|------|
-| 📊 数据集概览 | 可视化查看 NSL-KDD 数据集分布和统计信息 |
-| 🔍 实时检测 | 输入流量特征参数，手动测试模型判断结果 |
-| 🔴 实时抓包 | 本机网络流量实时抓取 + AI 模型分析，攻击自动告警 |
-| 📁 批量检测 | 上传 CSV 文件批量分析，结果导出下载 |
-| 📈 模型评估 | 三种模型性能对比可视化 |
+| 📊 数据集概览 | NSL-KDD数据分布可视化 |
+| 🔍 实时检测 | 手动输入特征值，AI判断是否为攻击 |
+| 🖥️ 服务器日志检测 | **上传SSH/Nginx/防火墙日志，自动检测入侵** |
+| 📁 批量检测 | CSV批量分析+结果导出 |
+| 📈 模型评估 | 三种模型性能对比 |
 
-## 🎯 检测能力
+## 🖥️ 服务器日志检测能力
 
-| 类型 | 说明 | 典型攻击 | 风险等级 |
-|------|------|----------|----------|
-| 正常流量 | 合法网络访问 | Web浏览、邮件等 | ✅ 安全 |
-| DOS攻击 | 拒绝服务攻击 | Neptune, Smurf, Back | 🔴 高危 |
-| Probe探测 | 端口扫描、网络探测 | Nmap, Portsweep, Satan | 🟡 中危 |
-| R2L远程攻击 | 远程权限获取 | FTP写入, 密码猜测 | 🔴 高危 |
-| U2R提权攻击 | 本地用户提权为root | Buffer Overflow, Rootkit | ⚫ 严重 |
+| 攻击类型 | 检测方法 | 风险等级 |
+|----------|----------|----------|
+| SSH暴力破解 | 同一IP失败≥5次 | 🔴 高危 |
+| SQL注入 | union select等关键词 | 🔴 高危 |
+| XSS攻击 | script标签等 | 🔴 高危 |
+| 目录遍历 | ../等路径穿越 | 🔴 高危 |
+| CC攻击 | 单IP请求≥1000次 | 🔴 高危 |
+| 端口扫描 | 多端口探测 | 🔴 高危 |
+| Root直接登录 | auth.log检测 | 🟡 中危 |
+| 提权尝试 | sudo危险命令 | ⚫ 严重 |
+| WebShell | eval/base64等 | 🔴 高危 |
+| 扫描器识别 | nikto/sqlmap等UA | 🔴 高危 |
 
-## 🧠 模型
+## 🧠 模型 (NSL-KDD)
 
-基于 NSL-KDD 数据集训练了 3 个模型:
+| 模型 | 准确率 | 训练耗时 |
+|------|--------|----------|
+| 随机森林 | 75.47% | 0.5s |
+| 梯度提升 | 75.23% | 2.8s |
+| MLP神经网络 | 74.82% | 3.6s |
 
-| 模型 | 准确率 | 训练耗时 | 说明 |
-|------|--------|----------|------|
-| 随机森林 (Random Forest) | 75.47% | 0.5s | 集成学习，快速稳定 |
-| 梯度提升 (HistGradientBoosting) | 75.23% | 2.8s | 梯度提升树 |
-| MLP神经网络 | 74.82% | 3.6s | 多层感知机 |
+## 🚀 快速开始
 
-> 注：R2L 和 U2R 类别在 NSL-KDD 训练集中样本极少（分别为 115 和 5 条），检测难度大，这是该数据集的已知挑战。
+```bash
+# 安装依赖
+pip install -r requirements.txt
 
-## 🏗️ 技术栈
+# 下载NSL-KDD数据集 (可从GitHub下载)
+# 放入 data/ 目录
 
-- **机器学习**: scikit-learn (RandomForest, HistGradientBoosting, MLP)
-- **实时抓包**: scapy (BPF 过滤器, 特征提取)
-- **数据处理**: pandas, numpy
-- **可视化**: matplotlib, seaborn
-- **前端**: Streamlit
-- **数据集**: NSL-KDD (Canadian Institute for Cybersecurity)
+# 训练模型
+python src/training/train_nsl_kdd.py
+
+# 启动前端
+streamlit run frontend/app.py
+```
+
+### 服务器日志检测使用
+```bash
+# 从服务器下载日志
+scp root@your-server:/var/log/auth.log ./auth.log
+
+# 打开前端 → 选择「服务器日志检测」→ 上传日志 → 自动分析
+streamlit run frontend/app.py
+```
 
 ## 📁 项目结构
 
 ```
 ai-intrusion-detection/
-├── data/
-│   ├── KDDTrain+.txt              # NSL-KDD 训练集 (13,688条)
-│   ├── KDDTest+.txt               # NSL-KDD 测试集 (5,334条)
-│   ├── train.csv                  # 处理后训练数据
-│   └── test.csv                   # 处理后测试数据
-├── models/
-│   ├── random_forest.pkl           # 随机森林模型
-│   ├── gradient_boosting.pkl       # 梯度提升模型
-│   ├── mlp.pkl                     # MLP神经网络
-│   ├── scaler.pkl                  # 标准化器
-│   ├── encoders.pkl                # 类别编码器
-│   ├── feature_names.pkl           # 特征名列表
-│   ├── metrics.json                # 模型评估指标
-│   └── dataset_info.json           # 数据集信息
-├── src/
-│   ├── generate_data.py            # 模拟数据生成器
-│   ├── training/
-│   │   ├── train_models.py         # 模拟数据训练
-│   │   └── train_nsl_kdd.py        # NSL-KDD 真实数据训练
-│   └── utils/
-│       ├── predictor.py            # 模型预测器
-│       └── realtime_capture.py     # 实时抓包特征提取
+├── data/samples/              # 测试日志样本
+│   ├── sample_auth.log        # SSH攻击测试样本
+│   └── sample_nginx.log       # Web攻击测试样本
 ├── frontend/
-│   └── app.py                      # Streamlit 前端
+│   └── app.py                 # Streamlit前端 (7个功能页)
+├── src/
+│   ├── generate_data.py       # 模拟数据生成
+│   ├── training/
+│   │   └── train_nsl_kdd.py   # NSL-KDD训练脚本
+│   └── utils/
+│       ├── predictor.py       # 模型预测器
+│       ├── realtime_capture.py # 实时抓包模块
+│       └── server_log_analyzer.py # 服务器日志分析
 ├── requirements.txt
 └── README.md
 ```
 
-## 🚀 快速开始
+## 🛠️ 技术栈
 
-### 环境要求
-- Python 3.10+
-- Windows/Linux/macOS
-
-### 安装依赖
-```bash
-pip install scikit-learn pandas numpy matplotlib seaborn streamlit scapy joblib
-```
-
-### 运行步骤
-
-```bash
-# 1. 使用 NSL-KDD 真实数据集训练模型
-python src/training/train_nsl_kdd.py
-
-# 2. 启动前端 (自动打开浏览器)
-streamlit run frontend/app.py
-```
-
-或者使用模拟数据:
-```bash
-python src/generate_data.py
-python src/training/train_models.py
-streamlit run frontend/app.py
-```
-
-### 实时抓包检测
-1. 在前端页面选择「实时抓包检测」
-2. 选择模型和分析窗口
-3. 可选填 BPF 过滤器 (如 `tcp port 80`)
-4. 点击开始抓包 (需要管理员/root权限)
-
-## 📊 数据集说明
-
-**NSL-KDD** 是网络安全领域最经典的基准数据集之一:
-- 来源: Canadian Institute for Cybersecurity (CIC)
-- 训练集: 13,688 条流量记录
-- 测试集: 5,334 条流量记录
-- 特征: 36 维数值特征 + 3 维类别特征
-- 标签: 正常流量 + 4 大类攻击 (含 39 种攻击子类型)
-
-## 📝 参考资料
-
-- [NSL-KDD Dataset](https://www.unb.ca/cic/datasets/nsl.html)
-- [KDD Cup 1999](https://kdd.ics.uci.edu/databases/kddcup99/kddcup99.html)
-- [A Detailed Analysis of the KDD CUP 99 Data Set](https://scholar.google.com/scholar?q=nsl+kdd+intrusion+detection)
+Python / scikit-learn / Streamlit / scapy / pandas / matplotlib
 
 ## 📄 License
 
