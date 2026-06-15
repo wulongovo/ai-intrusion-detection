@@ -1,0 +1,19 @@
+Jun 15 08:01:22 server sshd[1234]: Failed password for root from 192.168.1.100 port 22
+Jun 15 08:01:25 server sshd[1235]: Failed password for root from 192.168.1.100 port 22
+Jun 15 08:01:28 server sshd[1236]: Failed password for root from 192.168.1.100 port 22
+Jun 15 08:01:31 server sshd[1237]: Failed password for invalid user admin from 192.168.1.100 port 22
+Jun 15 08:01:34 server sshd[1238]: Failed password for invalid user admin from 192.168.1.100 port 22
+Jun 15 08:02:00 server sshd[1239]: Failed password for root from 10.0.0.50 port 22
+Jun 15 08:02:03 server sshd[1240]: Failed password for root from 10.0.0.50 port 22
+Jun 15 08:02:06 server sshd[1241]: Failed password for root from 10.0.0.50 port 22
+Jun 15 08:02:09 server sshd[1242]: Failed password for root from 10.0.0.50 port 22
+Jun 15 08:02:12 server sshd[1243]: Failed password for root from 10.0.0.50 port 22
+Jun 15 08:02:15 server sshd[1244]: Failed password for root from 10.0.0.50 port 22
+Jun 15 08:03:00 server sshd[1245]: Accepted password for root from 10.0.0.50 port 22
+Jun 15 08:05:00 server sudo: hacker : TTY=pts/0 ; PWD=/root ; USER=root ; COMMAND=/bin/cat /etc/shadow
+Jun 15 08:06:00 server sshd[1246]: Failed password for invalid user test from 45.33.32.156 port 22
+Jun 15 08:06:02 server sshd[1247]: Failed password for invalid user test from 45.33.32.156 port 22
+Jun 15 08:06:04 server sshd[1248]: Failed password for invalid user user from 45.33.32.156 port 22
+Jun 15 08:06:06 server sshd[1249]: Failed password for invalid user guest from 45.33.32.156 port 22
+Jun 15 08:06:08 server sshd[1250]: Failed password for invalid user oracle from 45.33.32.156 port 22
+Jun 15 08:06:10 server sshd[1251]: Failed password for invalid user mysql from 45.33.32.156 port 22
