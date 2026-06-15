@@ -2,6 +2,6 @@ scikit-learn>=1.4
 pandas>=2.0
 numpy>=1.24
 matplotlib>=3.7
-seaborn>=0.12
 streamlit>=1.30
+scapy>=2.5
 joblib>=1.3
