@@ -1,0 +1,20 @@
+{
+  "name": "NSL-KDD",
+  "train_samples": 13687,
+  "test_samples": 5333,
+  "features": 36,
+  "categories": {
+    "正常流量": 7273,
+    "DOS拒绝服务攻击": 5066,
+    "探测扫描攻击": 1228,
+    "远程权限攻击": 115,
+    "提权攻击": 5
+  },
+  "attack_types": [
+    "u2r",
+    "probe",
+    "dos",
+    "normal",
+    "r2l"
+  ]
+}
