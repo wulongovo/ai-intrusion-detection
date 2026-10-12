@@ -1,33 +1,33 @@
-# 🛡️ AI入侵检测系统 (AI Intrusion Detection System)
+#AI入侵检测系统 (AI Intrusion Detection System)
 
 基于机器学习的网络流量异常检测系统，使用 **NSL-KDD 真实数据集** 训练，支持 **服务器日志入侵检测**。
 
-## 📋 功能特性
+##功能特性
 
 | 模块 | 说明 |
 |------|------|
-| 📊 数据集概览 | NSL-KDD数据分布可视化 |
-| 🔍 实时检测 | 手动输入特征值，AI判断是否为攻击 |
-| 🖥️ 服务器日志检测 | **上传SSH/Nginx/防火墙日志，自动检测入侵** |
-| 📁 批量检测 | CSV批量分析+结果导出 |
-| 📈 模型评估 | 三种模型性能对比 |
+| 数据集概览 | NSL-KDD数据分布可视化 |
+| 实时检测 | 手动输入特征值，AI判断是否为攻击 |
+| 服务器日志检测 | **上传SSH/Nginx/防火墙日志，自动检测入侵** |
+| 批量检测 | CSV批量分析+结果导出 |
+| 模型评估 | 三种模型性能对比 |
 
-## 🖥️ 服务器日志检测能力
+## 服务器日志检测能力
 
 | 攻击类型 | 检测方法 | 风险等级 |
 |----------|----------|----------|
-| SSH暴力破解 | 同一IP失败≥5次 | 🔴 高危 |
-| SQL注入 | union select等关键词 | 🔴 高危 |
-| XSS攻击 | script标签等 | 🔴 高危 |
-| 目录遍历 | ../等路径穿越 | 🔴 高危 |
-| CC攻击 | 单IP请求≥1000次 | 🔴 高危 |
-| 端口扫描 | 多端口探测 | 🔴 高危 |
-| Root直接登录 | auth.log检测 | 🟡 中危 |
-| 提权尝试 | sudo危险命令 | ⚫ 严重 |
-| WebShell | eval/base64等 | 🔴 高危 |
-| 扫描器识别 | nikto/sqlmap等UA | 🔴 高危 |
+| SSH暴力破解 | 同一IP失败≥5次 | 高危 |
+| SQL注入 | union select等关键词 | 高危 |
+| XSS攻击 | script标签等 | 高危 |
+| 目录遍历 | ../等路径穿越 | 高危 |
+| CC攻击 | 单IP请求≥1000次 | 高危 |
+| 端口扫描 | 多端口探测 | 高危 |
+| Root直接登录 | auth.log检测 | 中危 |
+| 提权尝试 | sudo危险命令 | 严重 |
+| WebShell | eval/base64等 | 高危 |
+| 扫描器识别 | nikto/sqlmap等UA | 高危 |
 
-## 🧠 模型 (NSL-KDD)
+## 模型 (NSL-KDD)
 
 | 模型 | 准确率 | 训练耗时 |
 |------|--------|----------|
@@ -35,7 +35,7 @@
 | 梯度提升 | 75.23% | 2.8s |
 | MLP神经网络 | 74.82% | 3.6s |
 
-## 🚀 快速开始
+## 快速开始
 
 ```bash
 # 安装依赖
@@ -60,7 +60,7 @@ scp root@your-server:/var/log/auth.log ./auth.log
 streamlit run frontend/app.py
 ```
 
-## 📁 项目结构
+## 项目结构
 
 ```
 ai-intrusion-detection/
@@ -81,10 +81,10 @@ ai-intrusion-detection/
 └── README.md
 ```
 
-## 🛠️ 技术栈
+## 技术栈
 
 Python / scikit-learn / Streamlit / scapy / pandas / matplotlib
 
-## 📄 License
+## License
 
 MIT License
